@@ -1,0 +1,18 @@
+node_modules/
+.env
+.env.local
+.env.*
+.DS_Store
+npm-debug.log*
+
+# Next.js
+.next/
+out/
+build/
+
+# IDEs
+.idea/
+.vscode/
+
+# Ignore test / coverage
+coverage/
