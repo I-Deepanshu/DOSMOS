@@ -87,9 +87,17 @@ export default function SecurityQuestionPage() {
              {error ? (
                 <div className="text-[var(--error-color)] text-[12px] animate-shake">{error}</div>
              ) : (
-                <div className="text-[12px] text-[var(--text-muted)]">Press enter to connect</div>
+                <div className="text-[12px] text-[var(--text-muted)]">Enter your answer to connect</div>
              )}
           </div>
+
+          <button
+            type="submit"
+            className="premium-btn w-full mt-2"
+            disabled={loading || !answer.trim()}
+          >
+            {loading ? "Verifying..." : "Confirm Identity →"}
+          </button>
         </form>
       </motion.div>
     </main>
