@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
-import { setAccessToken, setUser } from "@/lib/auth";
+import { setAccessToken, setUser, setSessionCookie } from "@/lib/auth";
 
 export default function SecurityQuestionPage() {
   const router = useRouter();
@@ -41,6 +41,7 @@ export default function SecurityQuestionPage() {
       }
       setAccessToken(data.accessToken);
       setUser(data.user);
+      setSessionCookie(); // write readable cookie on Vercel domain for middleware
       
       sessionStorage.clear(); // Clean up auth flow temp data
       router.push(data.user.role === "admin" ? "/admin" : "/chat");

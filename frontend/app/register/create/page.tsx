@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
-import { setAccessToken, setUser } from "@/lib/auth";
+import { setAccessToken, setUser, setSessionCookie } from "@/lib/auth";
 
 export default function RegisterCreatePage() {
   const router  = useRouter();
@@ -21,6 +21,7 @@ export default function RegisterCreatePage() {
       const { data } = await api.post("/auth/register", { name: name.trim(), dob });
       setAccessToken(data.accessToken);
       setUser(data.user);
+      setSessionCookie(); // write readable cookie on Vercel domain for middleware
       // Store planet data for the birth animation screen
       sessionStorage.setItem("newPlanet", JSON.stringify(data.user.planet));
       sessionStorage.setItem("newChatId", data.chatId);
