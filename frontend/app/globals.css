@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+:root {
+  --bg-base: #050510;
+  --bg-surface: #0B0B18; /* Solid dark surface for chat */
+  --bg-input: #0D0D18;
+  --bg-glass: rgba(10, 10, 20, 0.6);
+  --border-soft: rgba(255, 255, 255, 0.06); 
+  --border-hover: rgba(255, 255, 255, 0.1);
+  
+  --sentinel-accent: rgba(127, 90, 240, 0.25);
+  --user-accent: rgba(255, 255, 255, 0.08);
+  --accent-primary: #7F5AF0;
+  --accent-secondary: #2CB7FF;
+  
+  --text-primary: rgba(255, 255, 255, 0.9);
+  --text-secondary: rgba(255, 255, 255, 0.5);
+  --text-muted: rgba(255, 255, 255, 0.3);
+
+  --error-color: #FF4D6D;
+  --success-color: #00FFA3;
+  --cosmos-glow: rgba(127,90,240,0.15); /* Reduced intensity */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background-color: var(--bg-base);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--accent-primary);
+  overflow-x: hidden;
+  /* Universal Rocket Cursor */
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkQ3MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNC41IDE2LjVjLTEuNTEuMjYtMiA1LTIgNXMzLjc0LS41IDUtMmMuNzEtLjg0LjctMi4xMy0uMDktMi45MWEyLjE4IDIuMTggMCAwIDAtMi45MS0uMDl6Ii8+PHBhdGggZD0ibTEyIDE1LTMtM2EyMiAyMiAwIDAgMSAyLTMuOTVBMTIuODggMTIuODggMCAwIDEgMjIgMmMwIDIuNzItLjc4IDcuNS02IDExYTIyLjM1IDIyLjM1IDAgMCAxLTQgMnoiLz48cGF0aCBkPSJNOSAxMkg0cy41NS0zLjAzIDItNWMxLjYyLTIuMiA1LTMgNS0zIi8+PHBhdGggZD0iTTEyIDE1djVzMy4wMy0uNTUgNS0yYzIuMi0xLjYyIDMtNSA0LTV6Ii8+PC9zdmc+'), auto;
+}
+
+button, a, .cursor-pointer {
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkQ3MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNC41IDE2LjVjLTEuNTEuMjYtMiA1LTIgNXMzLjc0LS41IDUtMmMuNzEtLjg0LjctMi4xMy0uMDktMi45MWEyLjE4IDIuMTggMCAwIDAtMi45MS0uMDl6Ii8+PHBhdGggZD0ibTEyIDE1LTMtM2EyMiAyMiAwIDAgMSAyLTMuOTVBMTIuODggMTIuODggMCAwIDEgMjIgMmMwIDIuNzItLjc4IDcuNS02IDExYTIyLjM1IDIyLjM1IDAgMCAxLTQgMnoiLz48cGF0aCBkPSJNOSAxMkg0cy41NS0zLjAzIDItNWMxLjYyLTIuMiA1LTMgNS0zIi8+PHBhdGggZD0iTTEyIDE1djVzMy4wMy0uNTUgNS0yYzIuMi0xLjYyIDMtNSA0LTV6Ii8+PC9zdmc+'), pointer !important;
+}
+
+h1, h2, h3, .heading-orbitron {
+  font-family: 'Space Grotesk', 'Orbitron', sans-serif;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* Linear-style inputs */
+.premium-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 12px 16px;
+  transition: border-color 120ms ease, background-color 120ms ease;
+  outline: none;
+}
+.premium-input:focus {
+  border-color: var(--accent-primary);
+  background: rgba(255,255,255,0.02);
+}
+.premium-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Linear-style buttons */
+.premium-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-hover);
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 24px;
+  transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1), border-color 180ms ease, box-shadow 180ms ease;
+  outline: none;
+}
+.premium-btn:hover {
+  transform: scale(1.02);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 12px var(--cosmos-glow);
+}
+.premium-btn:active {
+  transform: scale(0.98);
+}
+.premium-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  border-color: var(--border-soft);
+  box-shadow: none;
+}
+
+/* Panels */
+.premium-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  padding: 32px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Animation utilities */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.animate-shake {
+  animation: shake 150ms ease-in-out 2;
+}
+
+/* Orbital System Classes */
+.cosmos-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cosmos-sun {
+  background: #0B0B18;
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+  animation: sun-pulse 8s ease-in-out infinite;
+}
+
+@keyframes sun-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.03); opacity: 0.9; }
+}
+
+.cosmos-orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.6s ease;
+}
+
+/* Focused state: Rings almost disappear to silence the background */
+.cosmos-container.is-focused .cosmos-orbit-ring {
+  opacity: 0.08;
+  border-color: rgba(255, 215, 0, 0.02);
+}
+
+.cosmos-planet-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: transform;
+  transition: animation-duration 0.8s ease; /* Smooth transition into slow-down */
+}
+
+/* Partial Slowdown logic */
+.cosmos-planet-wrapper.slow-down {
+  animation-duration: 120s !important; /* ~0.2x speed assuming base is 25s */
+}
+
+.cosmos-planet-wrapper.paused {
+  animation-play-state: paused;
+}
+
+.cosmos-planet-node {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  pointer-events: auto;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.3, 1), 
+              filter 0.3s ease, 
+              opacity 0.3s ease;
+}
+
+/* Rim Lighting: Subtle inner focus */
+.cosmos-planet-node.focused {
+  box-shadow: 0 0 20px rgba(255,255,255,0.1), 
+              inset 0 0 8px rgba(255,255,255,0.4);
+}
+
+.cosmos-planet-node.active {
+  transform: translateY(-var(--radius)) scale(1.12) !important;
+  filter: brightness(1.4);
+  z-index: 100 !important;
+}
+
+/* Pure Opacity Tooltip: No slide, no scale */
+.system-tooltip-v2 {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.system-tooltip-v2.visible {
+  opacity: 1;
+}
+
+/* Focus Mode */
+.cosmos-focus-dim {
+  background: rgba(5, 5, 16, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+/* System UI Tooltip */
+.system-tooltip {
+  background: rgba(11, 11, 24, 0.9);
+  border: 1px solid var(--border-soft);
+  padding: 8px 12px;
+  border-radius: 0px; /* Sharp edges as spec'd */
+  box-shadow: none;
+  pointer-events: none;
+}
+
+@keyframes spin-linear {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.glow-pulse {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 5px var(--accent-primary)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 15px var(--accent-primary)); }
+}
+
+.text-shadow-glow {
+  text-shadow: 0 0 10px rgba(127, 90, 240, 0.4);
+}
+
+/* Chat structure */
+.chat-bubble {
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DOSMOS | The Cosmic Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-surface-variant": "#cac3d7",
+                    "on-tertiary-fixed": "#002113",
+                    "on-surface": "#e3e0f3",
+                    "surface-container-lowest": "#0d0d19",
+                    "surface": "#12121f",
+                    "inverse-on-surface": "#2f2f3d",
+                    "surface-container": "#1f1e2b",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "primary-container": "#7f5af0",
+                    "surface-container-highest": "#343341",
+                    "on-background": "#e3e0f3",
+                    "on-primary-container": "#ffffff",
+                    "error": "#ffb4ab",
+                    "primary": "#cdbdff",
+                    "secondary-container": "#05aaf2",
+                    "on-primary-fixed": "#20005f",
+                    "on-secondary-fixed": "#001e2f",
+                    "primary-fixed-dim": "#cdbdff",
+                    "surface-container-low": "#1a1a27",
+                    "on-secondary-fixed-variant": "#004c6e",
+                    "on-primary-fixed-variant": "#4e1dbe",
+                    "surface-dim": "#12121f",
+                    "inverse-primary": "#673fd6",
+                    "background": "#12121f",
+                    "surface-tint": "#cdbdff",
+                    "on-secondary": "#00344d",
+                    "surface-container-high": "#292936",
+                    "on-error": "#690005",
+                    "secondary": "#89ceff",
+                    "tertiary-container": "#00875d",
+                    "on-tertiary-container": "#ffffff",
+                    "inverse-surface": "#e3e0f3",
+                    "secondary-fixed-dim": "#89ceff",
+                    "primary-fixed": "#e7deff",
+                    "surface-variant": "#343341",
+                    "outline": "#948ea0",
+                    "on-error-container": "#ffdad6",
+                    "surface-bright": "#383846",
+                    "on-secondary-container": "#003b57",
+                    "outline-variant": "#494454",
+                    "secondary-fixed": "#c9e6ff",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-primary": "#360096",
+                    "tertiary": "#4edea3",
+                    "on-tertiary": "#003824",
+                    "error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(52, 51, 65, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .orbit-pattern {
+            background-image: radial-gradient(circle at 50% 50%, transparent 69%, rgba(205, 189, 255, 0.05) 70%, transparent 71%);
+            background-size: 200px 200px;
+        }
+        .ghost-border {
+            border: 0.5px solid rgba(73, 68, 84, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 h-full w-72 z-50 flex flex-col h-screen p-6 bg-[#1a1a27]/90 backdrop-blur-2xl border-r border-[#494454]/20 shadow-2xl duration-500 ease-in-out">
+<div class="flex items-center gap-3 mb-10">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-lg">shield</span>
+</div>
+<div>
+<h1 class="text-lg font-black text-[#7f5af0] font-headline uppercase tracking-widest">The Vault</h1>
+<p class="text-[10px] font-headline text-[#89ceff] tracking-tighter opacity-80 uppercase">Secure Connection Active</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 text-[#cdbdff] border-r-2 border-[#7f5af0] bg-gradient-to-r from-[#7f5af0]/10 to-transparent font-['Space_Grotesk'] uppercase tracking-wider text-sm transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span>The Hub</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#cac3d7]/60 font-['Space_Grotesk'] uppercase tracking-wider text-sm hover:text-[#cdbdff] hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+<span>The Sentinel's Chamber</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#cac3d7]/60 font-['Space_Grotesk'] uppercase tracking-wider text-sm hover:text-[#cdbdff] hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="adjust">adjust</span>
+<span>The Core</span>
+</a>
+</nav>
+<div class="mt-auto space-y-6">
+<button class="w-full py-4 bg-gradient-to-br from-primary-container to-primary text-on-primary-container font-headline font-bold text-xs tracking-[0.2em] uppercase rounded-xl hover:opacity-90 transition-opacity">
+                Initiate Comms
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-4 px-4 py-2 text-[#cac3d7]/60 font-['Space_Grotesk'] uppercase tracking-wider text-xs hover:text-[#cdbdff] transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-2 text-[#cac3d7]/60 font-['Space_Grotesk'] uppercase tracking-wider text-xs hover:text-[#cdbdff] transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span>Logs</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 min-h-screen relative overflow-y-auto">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-72 z-40 bg-[#12121f]/80 backdrop-blur-xl shadow-[0_0_20px_rgba(205,189,255,0.05)] flex justify-between items-center px-10 py-5">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-widest text-[#cdbdff] font-['Space_Grotesk'] uppercase">DOSMOS</span>
+<div class="hidden md:flex gap-6">
+<span class="text-[#cdbdff] font-bold font-['Space_Grotesk'] tracking-[0.05em] uppercase text-sm cursor-pointer">Archive</span>
+<span class="text-[#cac3d7] font-['Space_Grotesk'] tracking-[0.05em] uppercase text-sm cursor-pointer hover:text-[#cdbdff] transition-colors">Signals</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-[#cdbdff] cursor-pointer hover:bg-[#343341]/50 p-2 rounded-full transition-colors" data-icon="security">security</span>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined text-[#cdbdff] cursor-pointer hover:bg-[#343341]/50 p-2 rounded-full transition-colors" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full border-2 border-surface"></span>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden ghost-border p-0.5">
+<img alt="User celestial identity avatar" class="w-full h-full object-cover rounded-full" data-alt="close-up portrait of a digital human avatar with subtle ethereal blue glow on skin, high-tech industrial aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX_R-NJ8tay-HkiZhGjCIhC9oYBoIQdCA0mzxb5Zxe-NTiJnRVFSDOOCjp68po0N2wK29ApCj5HqV-Wzf6p9c7PWK1KtN0Qg5qkwO26yN6fnbZRa9ZlPaIdFvtLCB7-T0CoE6gVXpO_DKNWEsO8NClmyiUSNfkkISv-nr_n_LWkg3U4GkAS8LSg358u-lu6kb176Ar1JaYSoXsTnZJSz4vUVs61K0O_YsoehsLCqFT6ArP6tnUy1_MZp71-y1K-zGMaqXiJdgS_i8"/>
+</div>
+</div>
+</header>
+<!-- Content Grid -->
+<div class="pt-28 pb-12 px-10 max-w-7xl mx-auto">
+<!-- Hero Header -->
+<div class="mb-12">
+<h2 class="text-5xl font-headline font-bold text-primary tracking-tight mb-2">The Cosmic Hub</h2>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 px-3 py-1 bg-secondary/10 rounded-full border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-[10px] font-headline text-secondary uppercase tracking-widest font-bold">12 Secure Channels Active</span>
+</div>
+<span class="text-on-surface-variant/40 text-xs tracking-widest uppercase">System Time: 02:44:11 UTC</span>
+</div>
+</div>
+<!-- Bento Chat Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Active Conversation Main Card -->
+<div class="lg:col-span-8 group relative overflow-hidden glass-panel rounded-[2rem] ghost-border p-8 orbit-pattern">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+<div class="relative z-10 flex flex-col h-full">
+<div class="flex justify-between items-start mb-8">
+<div class="flex items-center gap-5">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center ghost-border">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="rocket_launch" data-weight="fill" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<div>
+<h3 class="text-2xl font-headline font-bold text-on-surface tracking-wide uppercase">Orion Syndicate</h3>
+<p class="text-on-surface-variant font-medium text-sm">Priority Alpha Thread • 4 Participants</p>
+</div>
+</div>
+<span class="text-[10px] font-headline font-bold text-primary-fixed-dim bg-primary-container/20 px-3 py-1 rounded-lg uppercase tracking-widest">Encrypted</span>
+</div>
+<div class="space-y-4 mb-10">
+<div class="p-4 bg-surface-container-lowest/50 rounded-2xl ghost-border max-w-md">
+<p class="text-sm text-on-surface leading-relaxed">The atmospheric scrubbers on the vault floor are reaching critical capacity. We need to initiate the purge sequence before the next rotation.</p>
+<span class="text-[10px] uppercase tracking-tighter text-on-surface-variant/50 mt-2 block">12:04 • Xander.V</span>
+</div>
+<div class="p-4 bg-primary-container/20 rounded-2xl ghost-border max-w-md ml-auto">
+<p class="text-sm text-primary leading-relaxed">Confirmed. I will manually override the environmental controls from the Core console in 10 minutes.</p>
+<span class="text-[10px] uppercase tracking-tighter text-primary/50 mt-2 block">12:08 • You</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="relative">
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 pr-12 focus:ring-0 focus:border-secondary transition-all text-on-surface placeholder:text-on-surface-variant/30" placeholder="Type a transmission..." type="text"/>
+<span class="absolute right-0 top-1/2 -translate-y-1/2 material-symbols-outlined text-secondary cursor-pointer hover:scale-110 transition-transform" data-icon="send">send</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Signals Sidebar -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Contact Card 1 -->
+<div class="glass-panel p-6 rounded-[1.5rem] ghost-border hover:bg-surface-container-high/60 transition-all cursor-pointer group">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="Contact Avatar" class="w-full h-full object-cover" data-alt="Abstract minimalist digital profile picture with geometric shapes and neon purple highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTBLYcXpKQVcftIk9_ZIzG0jRRK23Rc8Sy3mgIrXwF4uTHXkeTBsLUhz3gkjeEPFXLtvtYRCru_X4DIR8ZWjhmhpZlg5PJN8r2SfrtOf0vCkq6kNbviXBYZZHTIHMM0rxVhmEdn8W5zJfKuNKxr37MmlsGrxx8UgaI72VRHwRtz80o0z_jtLNuYBDTchaFn4lS7ZD12V9mr9WPuiC6R6tKIOJ5o-916R7OZQKruDkUgy8yt7LzL2jYS-NvNZoBhxVmWh3TaQF8imA"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="font-headline font-bold text-sm text-on-surface uppercase tracking-wide">M. Kaelo</span>
+<span class="text-[10px] text-on-surface-variant/40">2M AGO</span>
+</div>
+<p class="text-xs text-secondary-fixed-dim">Quantum link stabilized.</p>
+</div>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4"></div>
+</div>
+</div>
+<!-- Contact Card 2 -->
+<div class="glass-panel p-6 rounded-[1.5rem] ghost-border hover:bg-surface-container-high/60 transition-all cursor-pointer group relative overflow-hidden">
+<div class="absolute inset-0 orbit-pattern opacity-30"></div>
+<div class="flex items-center gap-4 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="Contact Avatar" class="w-full h-full object-cover" data-alt="Close up of a metallic robotic eye with orange glowing circuits on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWeRqRBEKauD2lscXpCovLbjau5rYyuYviHP2SEcuBlwKPC3DZvqx_pKsf95MiXwYJKUKVxwdzfVEtBOB9l2mQoTIb-qjgg61abKkwpd88SJpdn3HwAq8q7sfYmUQph8kKUDdz7IXvaO1HJKj0V0eSoxBP4VVbQMowhSrW9BYL4h0iTAHC09IzbLGejSjaRy4EnwObBRhjZTAqfWtClsf9u69MjOH3RUkij9cw4VdyU0H4Swq8IHqKLr09CZlt81_GWjnv26SptQQ"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="font-headline font-bold text-sm text-on-surface uppercase tracking-wide">Deep Stack AI</span>
+<span class="text-[10px] text-on-surface-variant/40">14H AGO</span>
+</div>
+<p class="text-xs text-on-surface-variant/60 truncate">Anomaly detected in sector 7-G...</p>
+</div>
+</div>
+</div>
+<!-- Contact Card 3 (New Connection) -->
+<div class="bg-surface-container-lowest/40 p-6 rounded-[1.5rem] ghost-border border-dashed border-outline-variant/50 flex flex-col items-center justify-center gap-3 group cursor-pointer hover:border-primary/50 transition-colors">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="add">add</span>
+</div>
+<span class="text-[10px] font-headline font-bold text-primary uppercase tracking-[0.2em]">Open New Frequency</span>
+</div>
+</div>
+<!-- Secondary Row -->
+<div class="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="glass-panel p-6 rounded-3xl ghost-border flex items-center gap-6">
+<div class="w-14 h-14 rounded-full bg-tertiary/10 flex items-center justify-center border border-tertiary/20">
+<span class="material-symbols-outlined text-tertiary" data-icon="bolt">bolt</span>
+</div>
+<div>
+<p class="text-[10px] font-headline text-on-surface-variant uppercase tracking-widest mb-1">Bandwidth Usage</p>
+<p class="text-xl font-headline font-bold text-on-surface">4.2 TB/s</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-3xl ghost-border flex items-center gap-6">
+<div class="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/20">
+<span class="material-symbols-outlined text-secondary" data-icon="public">public</span>
+</div>
+<div>
+<p class="text-[10px] font-headline text-on-surface-variant uppercase tracking-widest mb-1">Active Nodes</p>
+<p class="text-xl font-headline font-bold text-on-surface">87 Across Orbit</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-3xl ghost-border flex items-center gap-6">
+<div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<p class="text-[10px] font-headline text-on-surface-variant uppercase tracking-widest mb-1">Security Rating</p>
+<p class="text-xl font-headline font-bold text-on-surface">Class SSS</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Ambient Decoration -->
+<div class="fixed -bottom-24 -right-24 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="fixed -top-24 -left-24 w-96 h-96 bg-secondary/5 rounded-full blur-[120px] pointer-events-none"></div>
+</main>
+</body></html>

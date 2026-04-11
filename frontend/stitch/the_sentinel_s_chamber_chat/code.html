@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-surface-variant": "#cac3d7",
+                        "on-tertiary-fixed": "#002113",
+                        "on-surface": "#e3e0f3",
+                        "surface-container-lowest": "#0d0d19",
+                        "surface": "#12121f",
+                        "inverse-on-surface": "#2f2f3d",
+                        "surface-container": "#1f1e2b",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "primary-container": "#7f5af0",
+                        "surface-container-highest": "#343341",
+                        "on-background": "#e3e0f3",
+                        "on-primary-container": "#ffffff",
+                        "error": "#ffb4ab",
+                        "primary": "#cdbdff",
+                        "secondary-container": "#05aaf2",
+                        "on-primary-fixed": "#20005f",
+                        "on-secondary-fixed": "#001e2f",
+                        "primary-fixed-dim": "#cdbdff",
+                        "surface-container-low": "#1a1a27",
+                        "on-secondary-fixed-variant": "#004c6e",
+                        "on-primary-fixed-variant": "#4e1dbe",
+                        "surface-dim": "#12121f",
+                        "inverse-primary": "#673fd6",
+                        "background": "#12121f",
+                        "surface-tint": "#cdbdff",
+                        "on-secondary": "#00344d",
+                        "surface-container-high": "#292936",
+                        "on-error": "#690005",
+                        "secondary": "#89ceff",
+                        "tertiary-container": "#00875d",
+                        "on-tertiary-container": "#ffffff",
+                        "inverse-surface": "#e3e0f3",
+                        "secondary-fixed-dim": "#89ceff",
+                        "primary-fixed": "#e7deff",
+                        "surface-variant": "#343341",
+                        "outline": "#948ea0",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#383846",
+                        "on-secondary-container": "#003b57",
+                        "outline-variant": "#494454",
+                        "secondary-fixed": "#c9e6ff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-primary": "#360096",
+                        "tertiary": "#4edea3",
+                        "on-tertiary": "#003824",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+        .starfield-bg {
+            background-image: radial-gradient(circle at 50% 50%, #1a1a27 0%, #12121f 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .orbit-ring {
+            position: absolute;
+            border: 1px solid rgba(137, 206, 255, 0.05);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .glass-message-sentinel {
+            background: rgba(52, 51, 65, 0.4);
+            backdrop-filter: blur(24px);
+            box-shadow: inset 0 0 0 0.5px rgba(127, 90, 240, 0.3);
+        }
+        .glass-message-user {
+            background: #0d0d18;
+            box-shadow: inset 0 0 0 0.5px rgba(73, 68, 84, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-[#12121f]/80 backdrop-blur-xl shadow-[0_0_20px_rgba(205,189,255,0.05)] flex justify-between items-center px-8 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-bold tracking-widest text-[#cdbdff] font-['Space_Grotesk'] uppercase">DOSMOS</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-[#cac3d7] hover:bg-[#343341]/50 transition-colors px-3 py-1 rounded-lg font-['Space_Grotesk'] tracking-[0.05em] uppercase text-sm" href="#">The Hub</a>
+<a class="text-[#cdbdff] font-bold font-['Space_Grotesk'] tracking-[0.05em] uppercase text-sm" href="#">The Sentinel's Chamber</a>
+<a class="text-[#cac3d7] hover:bg-[#343341]/50 transition-colors px-3 py-1 rounded-lg font-['Space_Grotesk'] tracking-[0.05em] uppercase text-sm" href="#">The Core</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#7f5af0] hover:bg-[#343341]/50 transition-colors rounded-full">
+<span class="material-symbols-outlined">security</span>
+</button>
+<button class="p-2 text-[#7f5af0] hover:bg-[#343341]/50 transition-colors rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-outline-variant/30 overflow-hidden">
+<img alt="User celestial identity avatar" class="w-full h-full object-cover" data-alt="Stylized glowing avatar icon with cosmic energy swirls in shades of violet and cyan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzdwg3zLw0Wj0t0dJTxw4nowdSmnZ-GqTu45KAAMiC901HYeo60w4n-wLmLihxF_P22KwVRBBDI39gi7akwbQpbtm4HmnJHEU84Jd4oE1_rEMeAa6yhPqgJwYeMUtEtEdhaSB26UA8ik4BxU4T5kfgAimG3o01HcpDEaQQaCE0OrbDToEquqp2UX189VkPpUEU2kchZXV2xFOxyMHjjlThEmQ1u797f7-BxiZcGi4v5YoHDXV8Vykhx-ry4mKIII8rOKAzUunwWf0"/>
+</div>
+</div>
+</header>
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 h-full w-72 z-40 bg-[#1a1a27]/90 backdrop-blur-2xl border-r border-[#494454]/20 flex flex-col h-screen p-6 pt-24 hidden md:flex">
+<div class="mb-10">
+<h2 class="text-lg font-black text-[#7f5af0] font-['Space_Grotesk'] uppercase tracking-wider">The Vault</h2>
+<p class="text-[10px] text-secondary tracking-[0.2em] uppercase mt-1 opacity-80 flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                Secure Connection Active
+            </p>
+</div>
+<nav class="flex-1 space-y-4">
+<a class="flex items-center gap-3 p-3 text-[#cac3d7]/60 hover:text-[#cdbdff] hover:translate-x-1 transition-all font-['Space_Grotesk'] uppercase tracking-wider text-sm" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span>The Hub</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-[#cdbdff] border-r-2 border-[#7f5af0] bg-gradient-to-r from-[#7f5af0]/10 to-transparent font-['Space_Grotesk'] uppercase tracking-wider text-sm" href="#">
+<span class="material-symbols-outlined">shield</span>
+<span>The Sentinel's Chamber</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-[#cac3d7]/60 hover:text-[#cdbdff] hover:translate-x-1 transition-all font-['Space_Grotesk'] uppercase tracking-wider text-sm" href="#">
+<span class="material-symbols-outlined">adjust</span>
+<span>The Core</span>
+</a>
+</nav>
+<div class="mt-auto space-y-4 pt-6 border-t border-outline-variant/10">
+<a class="flex items-center gap-3 p-2 text-[#cac3d7]/60 hover:text-[#cdbdff] transition-all text-xs font-['Space_Grotesk'] uppercase" href="#">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 p-2 text-[#cac3d7]/60 hover:text-[#cdbdff] transition-all text-xs font-['Space_Grotesk'] uppercase" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span>Logs</span>
+</a>
+<button class="w-full mt-4 py-3 bg-gradient-to-tr from-primary-container to-primary text-on-primary-container rounded-xl font-headline tracking-widest uppercase text-xs font-bold hover:scale-[0.98] transition-transform">
+                Initiate Comms
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-0 md:ml-72 pt-20 h-screen starfield-bg flex flex-col relative">
+<!-- Orbit Decorations -->
+<div class="orbit-ring w-[1000px] h-[1000px]"></div>
+<div class="orbit-ring w-[1400px] h-[1400px]"></div>
+<div class="orbit-ring w-[1800px] h-[1800px]"></div>
+<!-- Chat Area -->
+<div class="flex-1 overflow-y-auto px-6 md:px-12 py-8 space-y-12 relative z-10 scroll-smooth">
+<!-- System/Sentinel Message -->
+<div class="flex flex-col items-start max-w-2xl gap-3">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-primary border border-primary/20">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<span class="font-headline text-[10px] tracking-[0.2em] text-primary uppercase">The Cosmic Sentinel</span>
+<span class="text-[9px] text-on-surface-variant/40 font-label">04:12:01 UTC</span>
+</div>
+<div class="glass-message-sentinel p-5 rounded-tr-3xl rounded-br-3xl rounded-bl-3xl text-on-surface leading-relaxed shadow-xl border-l-2 border-[#7f5af0]">
+<p class="text-sm font-light">The void is silent today, Commander. I have analyzed the encryption layers of the latest data transmission from the Andromeda Sector. The integrity of the vault remains absolute.</p>
+<div class="mt-4 flex gap-2">
+<div class="px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-[10px] text-primary uppercase tracking-tighter">Integrity Check: 100%</div>
+<div class="px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-[10px] text-secondary uppercase tracking-tighter">Line: Secured</div>
+</div>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end max-w-2xl ml-auto gap-3">
+<div class="flex items-center gap-3 mb-1 flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<span class="font-headline text-[10px] tracking-[0.2em] text-on-surface-variant uppercase">Commander</span>
+<span class="text-[9px] text-on-surface-variant/40 font-label">04:14:55 UTC</span>
+</div>
+<div class="glass-message-user p-5 rounded-tl-3xl rounded-bl-3xl rounded-br-3xl text-on-surface-variant leading-relaxed">
+<p class="text-sm">Initiate deep-scan of the encrypted log-774. I suspect a minor flux in the sub-space frequency. Keep the communication channel at minimal power to avoid detection.</p>
+</div>
+</div>
+<!-- Sentinel Response (Blue Rim Lighting) -->
+<div class="flex flex-col items-start max-w-2xl gap-3">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-secondary border border-secondary/20">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<span class="font-headline text-[10px] tracking-[0.2em] text-secondary uppercase">The Cosmic Sentinel</span>
+<span class="text-[9px] text-on-surface-variant/40 font-label">04:15:10 UTC</span>
+</div>
+<div class="glass-message-sentinel p-5 rounded-tr-3xl rounded-br-3xl rounded-bl-3xl text-on-surface leading-relaxed shadow-xl border-l-2 border-[#2CB7FF]">
+<p class="text-sm font-light">Acknowledged. Rerouting power to sensors. Deep-scan in progress. The 'silence between stars' will be maintained during the operation.</p>
+<div class="mt-4 flex items-center gap-3">
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[65%] shadow-[0_0_8px_rgba(44,183,255,0.6)]"></div>
+</div>
+<span class="text-[9px] text-secondary font-label whitespace-nowrap">SCANNING 65%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Message Input Bar -->
+<div class="p-6 md:p-10 relative z-20">
+<div class="max-w-4xl mx-auto flex items-center gap-4 bg-surface-container-low/40 backdrop-blur-md p-2 pl-6 pr-2 rounded-full border border-outline-variant/10 shadow-2xl">
+<button class="text-on-surface-variant/60 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attachment</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-sm font-body text-on-surface placeholder:text-on-surface-variant/40 px-0" placeholder="Transmit message to the Sentinel..." type="text"/>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant/60 hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-gradient-to-tr from-primary-container to-primary text-on-primary-container rounded-full shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<div class="flex justify-center mt-4">
+<p class="text-[10px] text-on-surface-variant/20 tracking-[0.3em] uppercase">Encrypted Point-to-Point Channel active</p>
+</div>
+</div>
+<!-- Corner Identity Mark -->
+<div class="fixed bottom-8 right-8 flex flex-col items-end opacity-20 pointer-events-none select-none">
+<span class="font-headline text-3xl font-black text-on-surface-variant tracking-tighter">DOSMOS</span>
+<span class="text-[8px] font-label tracking-[0.5em] uppercase">Sentinel Chamber // V.08</span>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-[#12121f]/90 backdrop-blur-xl flex justify-around items-center py-4 px-6 z-50">
+<a class="flex flex-col items-center gap-1 text-[#cac3d7]" href="#">
+<span class="material-symbols-outlined">hub</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#cdbdff]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#cac3d7]" href="#">
+<span class="material-symbols-outlined">adjust</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#cac3d7]" href="#">
+<span class="material-symbols-outlined">settings</span>
+</a>
+</nav>
+</body></html>
