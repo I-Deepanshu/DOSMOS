@@ -2,8 +2,8 @@ import authService from "../services/authService.js";
 
 const COOKIE_OPTS = {
   httpOnly: true,
-  secure:   true,       // user requested secure: true
-  sameSite: "strict",   // Strict
+  secure:   process.env.NODE_ENV === "production", // HTTPS only in prod
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // cross-origin cookie for Vercel <-> Render
 };
 
 export async function checkDob(req, res, next) {

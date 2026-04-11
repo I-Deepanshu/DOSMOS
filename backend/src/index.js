@@ -22,7 +22,7 @@ const app    = express();
 const server = createServer(app);
 const io     = new Server(server, {
   cors: {
-    origin:      process.env.FRONTEND_URL,
+    origin:      [process.env.FRONTEND_URL, "http://localhost:3000"].filter(Boolean),
     credentials: true,
   },
 });
@@ -44,8 +44,18 @@ app.use(helmet({
   },
 }));
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:3000",
+].filter(Boolean);
+
 app.use(cors({
-  origin:      process.env.FRONTEND_URL,
+  origin: (origin, cb) => {
+    // Allow no-origin requests (e.g. curl, Render health checks)
+    if (!origin) return cb(null, true);
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error(`CORS: origin ${origin} not allowed`));
+  },
   credentials: true,
 }));
 
@@ -65,6 +75,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 
+app.get("/", (_req, res) => res.json({ name: "DOSMOS API", status: "operational", version: "1.0.0" }));
 app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
 
 // ── Socket.io ──────────────────────────────────────────────────────────────────
