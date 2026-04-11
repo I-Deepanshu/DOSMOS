@@ -79,10 +79,6 @@ export async function verifyAnswer(stepToken, answer) {
 
   await _checkAccountLock(user);
 
-  if (user.status === "pending") {
-    throw new AuthError("Account pending activation by admin.");
-  }
-
   const correct = await compareAnswer(answer, user.security_answer_hash);
 
   if (!correct) {
@@ -166,7 +162,7 @@ export async function register(name, dob, security_question, security_answer, ip
     security_question,
     security_answer_hash: hash,
     role: "user",
-    status: "pending",
+    status: "active",
     is_active: true,
     failed_attempts: 0,
     created_at: new Date(),
@@ -198,7 +194,7 @@ export async function refreshTokens(oldRefreshToken, ip, userAgent) {
   }
 
   const user = await User.findById(payload.userId);
-  if (!user || (!user.is_active && user.status !== "pending")) throw new AuthError("Account unavailable.");
+  if (!user || !user.is_active) throw new AuthError("Account unavailable.");
 
   await RefreshToken.deleteOne({ _id: stored._id });
   return _issueTokens(user, ip, userAgent);
