@@ -10,8 +10,8 @@ function getIp(req) {
 
 export const authLimiter = rateLimit({
   windowMs,
-  max: process.env.NODE_ENV === "production" ? 5 : 1000,
-  keyGenerator: (req) => `${getIp(req)}:${req.body?.userId || "anon"}:auth`,
+  max: process.env.NODE_ENV === "production" ? 50 : 1000,
+  keyGenerator: (req) => `${getIp(req)}:auth`,
   validate: { trustProxy: false },
   standardHeaders: true,
   legacyHeaders: false,
@@ -23,7 +23,7 @@ export const authLimiter = rateLimit({
 
 export const registerLimiter = rateLimit({
   windowMs,
-  max: process.env.NODE_ENV === "production" ? 3 : 1000,
+  max: process.env.NODE_ENV === "production" ? 20 : 1000,
   keyGenerator: (req) => `${getIp(req)}:register`,
   validate: { trustProxy: false },
   standardHeaders: true,

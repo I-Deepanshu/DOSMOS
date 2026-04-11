@@ -20,6 +20,9 @@ import { errorHandler }           from "./middleware/errorHandler.js";
 
 const app    = express();
 const server = createServer(app);
+
+// Trust Render/Vercel's reverse proxy so X-Forwarded-For is used for real IPs
+app.set("trust proxy", 1);
 const io     = new Server(server, {
   cors: {
     origin:      [process.env.FRONTEND_URL, "http://localhost:3000"].filter(Boolean),
