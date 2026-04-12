@@ -330,6 +330,23 @@ export default function AdminChatPage() {
     setPreviewFile(file);
   }
 
+  function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf("image") !== -1) {
+        const file = items[i].getAsFile();
+        if (file) {
+          e.preventDefault();
+          const url = URL.createObjectURL(file);
+          setPreviewUrl(url);
+          setPreviewFile(file);
+          break;
+        }
+      }
+    }
+  }
+
   async function startRecording() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -583,6 +600,7 @@ export default function AdminChatPage() {
                   value={input}
                   onChange={handleInputChange}
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                  onPaste={handlePaste}
                 />
 
                 <button
