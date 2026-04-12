@@ -8,7 +8,7 @@ const readStateSchema = new mongoose.Schema({
 const chatSchema = new mongoose.Schema({
   participants:    [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   last_message:    { type: String, default: null },
-  last_message_at: { type: Date,   default: null },
+  last_message_at: { type: Date,   default: Date.now },
   read_state:      [readStateSchema],
   created_at:      { type: Date, default: Date.now },
 });
