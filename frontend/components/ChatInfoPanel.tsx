@@ -57,7 +57,7 @@ export default function ChatInfoPanel({ open, onClose, user, messageCount }: Cha
             </div>
 
             {/* Planet Visualization */}
-            <div className="flex flex-col items-center pt-12 pb-8 px-6">
+            <div className="flex flex-col items-center pt-12 pb-8 px-6 text-center">
               <div
                 className="w-24 h-24 rounded-full mb-6 transition-all duration-500"
                 style={{
@@ -65,18 +65,23 @@ export default function ChatInfoPanel({ open, onClose, user, messageCount }: Cha
                   boxShadow: `0 0 40px ${planet?.color || "#555"}40, 0 0 80px ${planet?.color || "#555"}20, inset 0 -8px 20px rgba(0,0,0,0.3)`,
                 }}
               />
-              <h3 className="text-[20px] font-bold text-[var(--text-primary)] mb-1">
-                {planet?.name || "Unknown Planet"}
+              <h3 className="text-[22px] font-bold text-[var(--text-primary)] leading-tight mb-1">
+                {user.name || "Unknown Commander"}
               </h3>
-              <p className="text-[13px] text-[var(--text-secondary)] uppercase tracking-widest">
-                {planet?.type || "Unknown"} Class
+              <p className="text-[14px] text-[var(--text-secondary)] uppercase tracking-widest mb-3">
+                {user.role === "admin" ? "Sentinel" : "Commander"}
               </p>
+              
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[rgba(255,255,255,0.05)] border border-[var(--border-soft)]">
+                <span className="w-2.5 h-2.5 rounded-full" style={{ background: planet?.color || "#555" }} />
+                <span className="text-[11px] text-[var(--text-muted)] uppercase tracking-widest">
+                  {planet?.name || "Unknown Planet"} ({planet?.type || "Unknown"})
+                </span>
+              </div>
             </div>
 
             {/* Info Grid */}
             <div className="px-6 space-y-4">
-              <InfoRow label="Commander" value={user.name || "Unknown"} />
-              <InfoRow label="Role" value={user.role === "admin" ? "Sentinel" : "Commander"} />
               <InfoRow label="Joined" value={memberSince} />
               {messageCount !== undefined && (
                 <InfoRow label="Messages" value={messageCount.toLocaleString()} />
