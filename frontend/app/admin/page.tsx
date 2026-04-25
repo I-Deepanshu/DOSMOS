@@ -293,8 +293,51 @@ export default function AdminPage() {
   );
 }
 
-function PlanetCard({ planet, isPaused, isSlowed, isActive, isTyping, onEnter, onLeave, onClick }: { 
-  planet: PlanetData, 
+// ── 3D sphere shading ─────────────────────────────────────────────────────────
+function hexToRgb(hex: string): [number, number, number] {
+  const clean = hex.replace("#", "");
+  const r = parseInt(clean.slice(0, 2), 16);
+  const g = parseInt(clean.slice(2, 4), 16);
+  const b = parseInt(clean.slice(4, 6), 16);
+  return [r, g, b];
+}
+
+function planet3dStyle(hex: string, size: number, hasUnread: boolean) {
+  const baseColor = hasUnread ? "#cc0000" : hex;
+  let r: number, g: number, b: number;
+  try {
+    [r, g, b] = hexToRgb(baseColor);
+  } catch {
+    [r, g, b] = [127, 90, 240]; // fallback
+  }
+  // Lighter variant for the lit hemisphere
+  const lr = Math.min(255, Math.round(r + (255 - r) * 0.45));
+  const lg = Math.min(255, Math.round(g + (255 - g) * 0.45));
+  const lb = Math.min(255, Math.round(b + (255 - b) * 0.45));
+  // Darker variant for the shadow hemisphere
+  const dr = Math.round(r * 0.25);
+  const dg = Math.round(g * 0.25);
+  const db = Math.round(b * 0.25);
+
+  const dim = Math.round(size * 0.06); // inner shadow spread
+
+  return {
+    background: [
+      // Layer 1: specular highlight — sharp white glint top-left
+      `radial-gradient(circle at 34% 28%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.55) 8%, transparent 30%)`,
+      // Layer 2: secondary soft sheen
+      `radial-gradient(circle at 42% 38%, rgba(255,255,255,0.18) 0%, transparent 45%)`,
+      // Layer 3: sphere diffuse — lit top-left → base → dark bottom-right
+      `radial-gradient(circle at 38% 35%, rgb(${lr},${lg},${lb}) 0%, ${baseColor} 48%, rgb(${dr},${dg},${db}) 100%)`,
+    ].join(", "),
+    boxShadow: hasUnread
+      ? `0 0 ${size}px rgba(204,0,0,0.9), 0 0 ${size * 2}px rgba(204,0,0,0.4), inset -${dim}px -${dim}px ${dim * 3}px rgba(0,0,0,0.7)`
+      : `0 0 ${size * 0.8}px rgba(${r},${g},${b},0.7), 0 0 ${size * 1.8}px rgba(${r},${g},${b},0.25), inset -${dim}px -${dim}px ${dim * 3}px rgba(0,0,0,0.6)`,
+  };
+}
+
+function PlanetCard({ planet, isPaused, isSlowed, isActive, isTyping, onEnter, onLeave, onClick }: {
+  planet: PlanetData,
   isPaused: boolean,
   isSlowed: boolean,
   isActive: boolean,
@@ -334,16 +377,13 @@ function PlanetCard({ planet, isPaused, isSlowed, isActive, isTyping, onEnter, o
 
         <div 
            className={`cosmos-planet-node ${planet.isOuter ? 'opacity-70 grayscale-[0.2]' : ''} ${isActive ? 'active' : ''} ${isPaused ? 'focused' : ''} ${planet.hasUnread ? 'animate-pulse' : ''}`}
-           style={{ 
-             width: planet.size * (planet.hasUnread ? 1.4 : 1), 
-             height: planet.size * (planet.hasUnread ? 1.4 : 1), 
-             backgroundColor: planet.color,
+           style={{
+             width: planet.size * (planet.hasUnread ? 1.4 : 1),
+             height: planet.size * (planet.hasUnread ? 1.4 : 1),
              transform: `translateY(-${planet.radius}px)`,
-             boxShadow: planet.hasUnread 
-                ? `0 0 40px #ff0000, inset -3px -3px 8px rgba(0,0,0,0.5)`
-                : `0 0 25px ${planet.color}60, inset -3px -3px 8px rgba(0,0,0,0.5)`,
              // @ts-ignore
-             "--radius": `${planet.radius}px`
+             "--radius": `${planet.radius}px`,
+             ...planet3dStyle(planet.originalColor, planet.size, planet.hasUnread),
            }}
            onMouseEnter={handleEnter}
            onMouseLeave={handleLeave}
