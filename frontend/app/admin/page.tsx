@@ -265,13 +265,68 @@ export default function AdminPage() {
             />
           ))}
 
-          {/* Central Sun */}
+          {/* Central Sun — 3D with corona */}
           <div className="absolute z-[50] flex flex-col items-center" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-            <div className="relative">
-               <div className="absolute inset-[-20px] rounded-full bg-yellow-400/10 blur-2xl" />
-               <div className="w-16 h-16 rounded-full bg-[#FFD700] shadow-[0_0_80px_rgba(255,215,0,0.3)]" />
+            <div className="relative flex items-center justify-center">
+
+              {/* Corona ring 1 — slow pulse */}
+              <div className="absolute rounded-full animate-ping"
+                style={{
+                  width: '110px', height: '110px',
+                  background: 'radial-gradient(circle, rgba(255,200,0,0.18) 0%, transparent 70%)',
+                  animationDuration: '2.4s', animationTimingFunction: 'ease-out',
+                }} />
+
+              {/* Corona ring 2 — medium pulse */}
+              <div className="absolute rounded-full animate-ping"
+                style={{
+                  width: '150px', height: '150px',
+                  background: 'radial-gradient(circle, rgba(255,160,0,0.10) 0%, transparent 70%)',
+                  animationDuration: '3.2s', animationDelay: '0.6s', animationTimingFunction: 'ease-out',
+                }} />
+
+              {/* Corona ring 3 — slow wide glow */}
+              <div className="absolute rounded-full animate-ping"
+                style={{
+                  width: '200px', height: '200px',
+                  background: 'radial-gradient(circle, rgba(255,120,0,0.06) 0%, transparent 70%)',
+                  animationDuration: '4s', animationDelay: '1.2s', animationTimingFunction: 'ease-out',
+                }} />
+
+              {/* Soft ambient halo */}
+              <div className="absolute rounded-full blur-2xl"
+                style={{
+                  width: '120px', height: '120px',
+                  background: 'radial-gradient(circle, rgba(255,220,80,0.55) 0%, rgba(255,140,0,0.2) 50%, transparent 80%)',
+                }} />
+
+              {/* 3D Sun sphere */}
+              <div
+                className="relative rounded-full z-10"
+                style={{
+                  width: '72px', height: '72px',
+                  background: [
+                    // Specular highlight — bright white glint top-left
+                    'radial-gradient(circle at 32% 26%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.5) 7%, transparent 28%)',
+                    // Secondary sheen
+                    'radial-gradient(circle at 40% 36%, rgba(255,255,200,0.25) 0%, transparent 40%)',
+                    // Sphere diffuse — bright gold → deep amber → dark edge
+                    'radial-gradient(circle at 36% 32%, #FFF176 0%, #FFD700 35%, #FF8C00 65%, #7B3500 100%)',
+                  ].join(', '),
+                  boxShadow: [
+                    '0 0 30px rgba(255,215,0,0.95)',
+                    '0 0 60px rgba(255,165,0,0.6)',
+                    '0 0 100px rgba(255,100,0,0.35)',
+                    '0 0 160px rgba(255,80,0,0.15)',
+                    'inset -4px -4px 12px rgba(100,30,0,0.6)',
+                  ].join(', '),
+                }}
+              />
             </div>
-            <span className="absolute top-[100%] mt-6 text-[11px] tracking-[0.5em] text-yellow-500/80 uppercase font-bold whitespace-nowrap">Deepanshu</span>
+            <span className="absolute top-[100%] mt-14 text-[11px] tracking-[0.5em] text-yellow-400/90 uppercase font-bold whitespace-nowrap"
+              style={{ textShadow: '0 0 12px rgba(255,215,0,0.8)' }}>
+              Deepanshu
+            </span>
           </div>
           
           {planets.map((planet) => (
