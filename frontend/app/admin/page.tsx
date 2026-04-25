@@ -317,7 +317,7 @@ export default function AdminPage() {
           ))}
 
           {/* Central Sun — 3D with corona */}
-          <div className="absolute z-[50] flex flex-col items-center" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+          <div className="absolute z-[50] flex flex-col items-center pointer-events-none" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             <div className="relative flex items-center justify-center">
 
               {/* Corona ring 1 — slow pulse */}
