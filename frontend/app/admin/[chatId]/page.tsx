@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-mo
 import { useRouter, useParams } from "next/navigation";
 import api from "@/lib/api";
 import { getSocket } from "@/lib/socket";
-import { getAccessToken, getUser, performLogout } from "@/lib/auth";
+import { getAccessToken, getUser, performLogout, bootstrapSession } from "@/lib/auth";
 import { v4 as uuid } from "uuid";
 import AudioPlayer from "@/components/AudioPlayer";
 import ImageLightbox from "@/components/ImageLightbox";
@@ -64,7 +64,8 @@ export default function AdminChatPage() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef   = useRef<Blob[]>([]);
   const typingTimeout    = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const user = getUser();
+  const [currentUser, setCurrentUser] = useState(() => getUser());
+  const user = currentUser;
 
   async function handleLogout() {
     await performLogout();
@@ -72,13 +73,17 @@ export default function AdminChatPage() {
   }
 
   useEffect(() => {
-    if (user?.role !== "admin") { router.replace("/chat"); return; }
-    
-    if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
-    }
-
     async function init() {
+      // Bootstrap session first so user is available after refresh
+      const ok = await bootstrapSession();
+      const resolvedUser = getUser();
+      if (!ok && !getAccessToken()) { router.replace("/"); return; }
+      if (resolvedUser?.role !== "admin") { router.replace("/chat"); return; }
+      setCurrentUser(resolvedUser);
+
+      if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+      }
       try {
         const { data: chatData }  = await api.get(`/chats/${chatId}`);
         const { data: msgData }   = await api.get(`/chats/${chatId}/messages?page=1&limit=30`);
@@ -159,7 +164,7 @@ export default function AdminChatPage() {
       socket.off("delivered_ack");
       socket.off("seen_ack");
     };
-  }, [chatId, router, user]);
+  }, [chatId, router]);
 
   // Handle document focus for seen logic
   useEffect(() => {
