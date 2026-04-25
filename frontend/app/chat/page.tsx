@@ -65,7 +65,8 @@ export default function ChatPage() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef   = useRef<Blob[]>([]);
   const typingTimeout    = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const user = getUser();
+  const [currentUser, setCurrentUser] = useState(() => getUser());
+  const user = currentUser;
 
   // ── Load chats + history ─────────────────────────────────────────────────
   // ── Logout ────────────────────────────────────────────────────────────────
@@ -83,6 +84,8 @@ export default function ChatPage() {
     async function init() {
       const ok = await bootstrapSession();
       if (!ok && !getAccessToken()) { router.replace("/"); return; }
+      // Update user state so the header re-renders with planet name after refresh
+      setCurrentUser(getUser());
       try {
         const { data: chatData } = await api.get("/chats");
         const chat = chatData.chats?.[0];
@@ -166,7 +169,7 @@ export default function ChatPage() {
       socket.off("delivered_ack");
       socket.off("seen_ack");
     };
-  }, [router, user?.id]);
+  }, [router]);
 
   // Handle document focus for seen logic
   useEffect(() => {
