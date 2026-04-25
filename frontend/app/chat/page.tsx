@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-mo
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { getSocket } from "@/lib/socket";
-import { getAccessToken, getUser } from "@/lib/auth";
+import { getAccessToken, getUser, bootstrapSession, performLogout } from "@/lib/auth";
 import { v4 as uuid } from "uuid";
 import AudioPlayer from "@/components/AudioPlayer";
 import ImageLightbox from "@/components/ImageLightbox";
@@ -68,14 +68,21 @@ export default function ChatPage() {
   const user = getUser();
 
   // ── Load chats + history ─────────────────────────────────────────────────
+  // ── Logout ────────────────────────────────────────────────────────────────
+  async function handleLogout() {
+    await performLogout();
+    router.replace("/");
+  }
+
   useEffect(() => {
-    if (!getAccessToken()) { router.replace("/"); return; }
     
     if ("Notification" in window && Notification.permission === "default") {
       Notification.requestPermission();
     }
 
     async function init() {
+      const ok = await bootstrapSession();
+      if (!ok && !getAccessToken()) { router.replace("/"); return; }
       try {
         const { data: chatData } = await api.get("/chats");
         const chat = chatData.chats?.[0];
@@ -422,9 +429,22 @@ export default function ChatPage() {
             <p className="text-[16px] font-semibold">{user?.planet?.name || user?.name}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <span className="w-2.5 h-2.5 rounded-full bg-[var(--success-color)] animate-pulse opacity-80" />
           <span className="text-[12px] uppercase tracking-wider text-[var(--text-secondary)] hidden sm:block">Secure Connection</span>
+          {/* Logout button */}
+          <button
+            id="logout-btn"
+            onClick={(e) => { e.stopPropagation(); handleLogout(); }}
+            title="Disconnect"
+            className="ml-1 w-9 h-9 flex items-center justify-center rounded-full text-[var(--text-muted)] hover:text-[var(--error-color)] hover:bg-[rgba(255,77,109,0.1)] transition-colors"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -646,6 +666,7 @@ export default function ChatPage() {
       <ChatInfoPanel 
         open={showInfo} 
         onClose={() => setShowInfo(false)} 
+        onLogout={handleLogout}
         user={adminUser}
         messageCount={messages.length}
       />

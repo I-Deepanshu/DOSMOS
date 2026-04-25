@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface ChatInfoPanelProps {
   open: boolean;
   onClose: () => void;
+  onLogout: () => void;
   user: {
     name?: string;
     planet?: { name?: string; type?: string; color?: string };
@@ -13,7 +14,7 @@ interface ChatInfoPanelProps {
   messageCount?: number;
 }
 
-export default function ChatInfoPanel({ open, onClose, user, messageCount }: ChatInfoPanelProps) {
+export default function ChatInfoPanel({ open, onClose, onLogout, user, messageCount }: ChatInfoPanelProps) {
   if (!user) return null;
 
   const planet = user.planet;
@@ -88,12 +89,25 @@ export default function ChatInfoPanel({ open, onClose, user, messageCount }: Cha
               )}
             </div>
 
-            {/* Bottom decorative element */}
-            <div className="mt-auto p-6 border-t border-[var(--border-soft)]">
+            {/* Bottom area */}
+            <div className="mt-auto p-6 border-t border-[var(--border-soft)] flex flex-col gap-4">
               <div className="flex items-center gap-2 justify-center">
                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--success-color)] animate-pulse" />
                 <span className="text-[11px] uppercase tracking-widest text-[var(--text-muted)]">Quantum Link Active</span>
               </div>
+              {/* Logout */}
+              <button
+                id="panel-logout-btn"
+                onClick={onLogout}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-[10px] border border-[rgba(255,77,109,0.25)] text-[var(--error-color)] text-[12px] uppercase tracking-widest font-medium hover:bg-[rgba(255,77,109,0.08)] transition-colors"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <polyline points="16 17 21 12 16 7"/>
+                  <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Disconnect
+              </button>
             </div>
           </motion.div>
         </>

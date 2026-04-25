@@ -1,3 +1,7 @@
+import axios from "axios";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+
 // In-memory access token store — never persisted to localStorage
 let _accessToken: string | null = null;
 
@@ -56,5 +60,49 @@ export function setSessionCookie() {
 
 export function clearSessionCookie() {
   document.cookie = "dosmos_session=; path=/; max-age=0";
+}
+
+// ── Silent session bootstrap ───────────────────────────────────────────────
+// Called on page load. If the dosmos_session cookie exists the refresh endpoint
+// will return a fresh accessToken + user without the user having to re-login.
+export async function bootstrapSession(): Promise<boolean> {
+  if (typeof document === "undefined") return false;
+  const hasCookie = document.cookie.split(";").some((c) => c.trim().startsWith("dosmos_session="));
+  if (!hasCookie) return false;
+  if (_accessToken) return true; // already have a valid token in memory
+  try {
+    const { data } = await axios.post(
+      `${BASE_URL}/api/auth/refresh`,
+      {},
+      { withCredentials: true }
+    );
+    setAccessToken(data.accessToken);
+    if (data.user) setUser(data.user);
+    return true;
+  } catch {
+    // Refresh token expired or invalid — clear stale cookie so middleware redirects
+    clearSessionCookie();
+    return false;
+  }
+}
+
+// ── Shared logout utility ──────────────────────────────────────────────────
+export async function performLogout(): Promise<void> {
+  try {
+    await axios.post(
+      `${BASE_URL}/api/auth/logout`,
+      {},
+      {
+        withCredentials: true,
+        headers: _accessToken ? { Authorization: `Bearer ${_accessToken}` } : {},
+      }
+    );
+  } catch {
+    // Ignore errors — we clear local state regardless
+  } finally {
+    clearAccessToken();
+    clearUser();
+    clearSessionCookie();
+  }
 }
 

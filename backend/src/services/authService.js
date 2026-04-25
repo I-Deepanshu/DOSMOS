@@ -197,7 +197,8 @@ export async function refreshTokens(oldRefreshToken, ip, userAgent) {
   if (!user || !user.is_active) throw new AuthError("Account unavailable.");
 
   await RefreshToken.deleteOne({ _id: stored._id });
-  return _issueTokens(user, ip, userAgent);
+  const tokens = await _issueTokens(user, ip, userAgent);
+  return { ...tokens, user };
 }
 
 // ── Logout ────────────────────────────────────────────────────────────────────

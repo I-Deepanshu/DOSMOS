@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
-import { setAccessToken, setUser } from "@/lib/auth";
+import { setAccessToken, setUser, setSessionCookie } from "@/lib/auth";
 
 const QUESTIONS = [
   "What is the name of your first pet?",
@@ -110,6 +110,7 @@ export default function RegisterPage() {
       });
       setAccessToken(data.accessToken);
       setUser(data.user);
+      setSessionCookie(); // write session cookie so middleware lets /chat through
       // Trigger birth
       setBirthData(data.user);
     } catch (err: any) {
