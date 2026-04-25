@@ -405,7 +405,28 @@ export default function AdminChatPage() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
-  if (loading) return <div className="min-h-screen bg-[var(--bg-base)]" />;
+  if (loading) {
+    return (
+      <div className="flex flex-col h-[100dvh] relative bg-[var(--bg-base)] overflow-hidden">
+        <div className="flex-none px-6 py-5 border-b border-[var(--border-soft)] bg-[var(--bg-glass)] flex items-center gap-4">
+          <div className="w-8 h-8 rounded-full bg-[rgba(255,255,255,0.05)] animate-pulse" />
+          <div className="w-10 h-10 rounded-full bg-[rgba(255,255,255,0.05)] animate-pulse" />
+          <div className="flex flex-col gap-2 flex-1">
+            <div className="w-24 h-3 bg-[rgba(255,255,255,0.05)] rounded animate-pulse" />
+            <div className="w-32 h-4 bg-[rgba(255,255,255,0.08)] rounded animate-pulse" />
+          </div>
+        </div>
+        <div className="flex-1 px-5 sm:px-10 w-full max-w-[960px] mx-auto flex flex-col justify-end pt-8 pb-8 gap-6">
+          <div className="w-[60%] h-16 bg-[rgba(255,255,255,0.03)] rounded-[16px] rounded-bl-sm animate-pulse" />
+          <div className="w-[40%] h-12 bg-[rgba(255,255,255,0.03)] rounded-[16px] rounded-bl-sm animate-pulse" />
+          <div className="w-[50%] h-14 bg-[var(--user-accent)] opacity-20 rounded-[16px] rounded-br-sm animate-pulse self-end" />
+        </div>
+        <div className="flex-none p-6 sm:px-10 border-t border-[var(--border-soft)] bg-[var(--bg-glass)]">
+          <div className="mx-auto max-w-[960px] h-[52px] bg-[rgba(255,255,255,0.03)] rounded-[16px] animate-pulse" />
+        </div>
+      </div>
+    );
+  }
 
   const mappedMessages = Array.from(new Map(messages.map(m => [m._id || m.tempId || m.created_at, m])).values());
   const lastSeenOutgoingId = [...mappedMessages].reverse().find(m => {
@@ -456,11 +477,16 @@ export default function AdminChatPage() {
         )}
 
         {messages.length === 0 && !loading && (
-          <div className="m-auto flex flex-col items-center justify-center opacity-40">
-            <div className="w-16 h-16 rounded-full border border-[var(--border-soft)] flex items-center justify-center mb-5">
-               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <div className="m-auto flex flex-col items-center justify-center">
+            <div className="relative flex items-center justify-center mb-8">
+              <div className="absolute w-32 h-32 rounded-full border border-[var(--accent-primary)] opacity-20 animate-spin" style={{ animationDuration: '8s', animationTimingFunction: 'linear' }} />
+              <div className="absolute w-24 h-24 rounded-full border border-dashed border-[var(--text-muted)] opacity-30 animate-spin" style={{ animationDuration: '12s', animationTimingFunction: 'linear', animationDirection: 'reverse' }} />
+              <div className="w-16 h-16 rounded-full bg-[var(--bg-surface)] border border-[var(--border-soft)] flex items-center justify-center z-10 shadow-[0_0_30px_rgba(127,90,240,0.15)]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-secondary)]"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              </div>
             </div>
-            <p className="text-[15px] text-[var(--text-secondary)] tracking-wide">Secure channel ready.</p>
+            <p className="text-[16px] text-[var(--text-primary)] font-medium mb-1">Target Acquired</p>
+            <p className="text-[13px] text-[var(--text-secondary)] opacity-70">Begin secure transmission...</p>
           </div>
         )}
         <AnimatePresence initial={false}>
@@ -538,13 +564,17 @@ export default function AdminChatPage() {
         <AnimatePresence>
           {typing && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="mt-4 text-[var(--text-muted)] text-[12px] italic mr-2 flex items-center justify-end gap-2"
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="mt-4 flex items-center gap-3 w-max"
             >
-              {typing}
-              <span className="w-1.5 h-1.5 bg-[var(--text-muted)] rounded-full animate-pulse" />
+              <div className="bg-[var(--bg-surface)] border border-[var(--border-soft)] rounded-[16px] rounded-bl-[4px] px-4 py-3 flex items-center gap-1 shadow-[0_4px_12px_rgba(0,0,0,0.2)]">
+                <span className="w-1.5 h-1.5 bg-[var(--text-muted)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-1.5 h-1.5 bg-[var(--text-muted)] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-1.5 h-1.5 bg-[var(--text-muted)] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+              <span className="text-[12px] text-[var(--text-muted)] italic opacity-70 tracking-wide">{typing}</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -716,9 +746,9 @@ function AdminSwipeableBubble({ msg, isAdmin, isSameSender, prevMsg, onReply, on
   return (
     <motion.div
       ref={msgRef}
-      initial={{ opacity: 0, y: 4 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 16, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ type: "spring", stiffness: 260, damping: 22 }}
       className={`flex w-full group ${isAdmin ? "justify-end" : "justify-start"} ${isSameSender && !prevMsg?.is_system ? "mt-1" : "mt-3"} relative`}
     >
       {/* Reply arrow icon */}
