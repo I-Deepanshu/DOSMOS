@@ -154,12 +154,12 @@ export default function AdminPage() {
   const getOtherUser = (chat: Chat) => chat.participants.find((p) => p.role !== "admin");
 
   const planets = useMemo((): PlanetData[] => {
-    return chats.slice(0, 20).map((chat, i) => {
-      const ringIndex = (i % 5);
-      const radius = 140 + (ringIndex * 60);
-      const startAngle = (i * 137.5) % 360; 
-      const speed = 25 + (ringIndex * 15) + (Math.sin(i) * 10); 
-      const size = 20 + (Math.abs(Math.cos(i)) * 12);
+    return chats.slice(0, 10).map((chat, i) => {
+      // Each planet gets its own unique orbit — no sharing
+      const radius = 90 + (i * 50);
+      const startAngle = (i * 137.5) % 360;
+      const speed = 22 + (i * 8) + (Math.sin(i) * 4); // outer planets orbit slower
+      const size = 22 + (Math.abs(Math.cos(i)) * 10);
       const other = getOtherUser(chat);
       const isUnread = chat.hasUnread;
       const originalColor = other?.planet?.color || "#7F5AF0";
@@ -175,7 +175,7 @@ export default function AdminPage() {
         originalColor,
         hasUnread: isUnread || false,
         unreadCount: chat.unreadCount || 0,
-        isOuter: ringIndex >= 3
+        isOuter: i >= 6,
       };
     });
   }, [chats]);
@@ -249,19 +249,19 @@ export default function AdminPage() {
             )}
           </AnimatePresence>
 
-          {/* Orbit Rings */}
-          {[140, 200, 260, 320, 380].map((radius) => (
-            <div 
-              key={radius} 
-              className="cosmos-orbit-ring" 
-              style={{ 
-                width: radius * 2, 
-                height: radius * 2,
+          {/* Orbit Rings — one per planet */}
+          {planets.map((planet) => (
+            <div
+              key={planet.id}
+              className="cosmos-orbit-ring"
+              style={{
+                width: planet.radius * 2,
+                height: planet.radius * 2,
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)'
-              }} 
+              }}
             />
           ))}
 
