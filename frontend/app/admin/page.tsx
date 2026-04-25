@@ -153,6 +153,27 @@ export default function AdminPage() {
 
   const getOtherUser = (chat: Chat) => chat.participants.find((p) => p.role !== "admin");
 
+  // Generate static starfield once
+  const stars = useMemo(() => {
+    return Array.from({ length: 150 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: Math.random() > 0.8 ? '2px' : '1px',
+      opacity: Math.random() * 0.8 + 0.2,
+      delay: `${Math.random() * 3}s`
+    }));
+  }, []);
+
+  const shootingStars = useMemo(() => {
+    return Array.from({ length: 3 }).map((_, i) => ({
+      id: i,
+      top: `${Math.random() * 50}%`,
+      left: `${50 + Math.random() * 50}%`,
+      delay: `${Math.random() * 5}s`
+    }));
+  }, []);
+
   const planets = useMemo((): PlanetData[] => {
     return chats.slice(0, 10).map((chat, i) => {
       // Each planet gets its own unique orbit — no sharing
@@ -222,7 +243,30 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen relative bg-[#050510] text-white flex flex-col overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1A1A05_0%,transparent_70%)] opacity-40 pointer-events-none" />
+      <div className="nebula-bg" />
+      
+      {/* Starfield */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {stars.map(star => (
+          <div 
+            key={star.id} 
+            className="absolute rounded-full bg-white"
+            style={{
+              left: star.left, top: star.top,
+              width: star.size, height: star.size,
+              opacity: star.opacity,
+              animation: star.size === '2px' ? `glow-pulse 3s ease-in-out infinite ${star.delay}` : undefined
+            }}
+          />
+        ))}
+        {shootingStars.map(star => (
+          <div
+            key={`shoot-${star.id}`}
+            className="shooting-star"
+            style={{ top: star.top, left: star.left, animationDelay: star.delay }}
+          />
+        ))}
+      </div>
 
       <header className="relative z-[100] flex items-center justify-between px-10 py-8 bg-transparent">
         <div>
@@ -251,18 +295,25 @@ export default function AdminPage() {
 
           {/* Orbit Rings — one per planet */}
           {planets.map((planet) => (
-            <div
-              key={planet.id}
-              className="cosmos-orbit-ring"
-              style={{
-                width: planet.radius * 2,
-                height: planet.radius * 2,
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)'
-              }}
-            />
+            <div key={`ring-${planet.id}`} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style={{ width: planet.radius * 2, height: planet.radius * 2 }}>
+              <div
+                className="cosmos-orbit-ring absolute inset-0"
+              />
+              {/* Permanent Planet Label on Orbit Ring */}
+              <div 
+                className="absolute text-[9px] uppercase tracking-widest text-[#A0A0B5]/60 font-semibold"
+                style={{ 
+                  left: '50%', 
+                  top: '100%', 
+                  transform: 'translate(-50%, -50%)',
+                  textShadow: '0 0 4px #050510',
+                  padding: '2px 6px',
+                  backgroundColor: '#050510'
+                }}
+              >
+                {planet.name}
+              </div>
+            </div>
           ))}
 
           {/* Central Sun — 3D with corona */}

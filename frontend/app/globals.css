@@ -251,3 +251,33 @@ h1, h2, h3, .heading-orbitron {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+/* ── Admin Background Effects ── */
+.nebula-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(127, 90, 240, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(44, 183, 255, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Shooting Stars */
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,0));
+  animation: shoot 4s linear infinite;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes shoot {
+  0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; }
+  10% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; }
+  100% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; }
+}

@@ -60,6 +60,7 @@ export default function AdminChatPage() {
   const [previewUrl, setPreviewUrl]   = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef   = useRef<Blob[]>([]);
@@ -187,10 +188,17 @@ export default function AdminChatPage() {
     if (firstUnreadId && messageRefs.current[firstUnreadId]) {
       messageRefs.current[firstUnreadId]?.scrollIntoView({ behavior: "smooth", block: "center" });
       setFirstUnreadId(null);
-    } else {
+    } else if (!showScrollButton) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, firstUnreadId]);
+
+  const handleScroll = () => {
+    if (!messagesContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+    const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+    setShowScrollButton(!isNearBottom);
+  };
 
   useEffect(() => {
     const handleLightbox = (e: any) => setLightboxSrc(e.detail);
@@ -430,7 +438,11 @@ export default function AdminChatPage() {
       </header>
 
       {/* Messages */}
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto px-5 sm:px-10 w-full max-w-[960px] mx-auto flex flex-col pt-8 pb-8 scroll-smooth">
+      <div 
+        ref={messagesContainerRef} 
+        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto px-5 sm:px-10 w-full max-w-[960px] mx-auto flex flex-col pt-8 pb-8 scroll-smooth"
+      >
         {hasMore && !loading && messages.length > 0 && (
           <div className="flex justify-center mb-6">
             <button
@@ -540,8 +552,26 @@ export default function AdminChatPage() {
         <div ref={bottomRef} className="h-2" />
       </div>
 
+      {/* Floating Scroll-to-Bottom Button */}
+      <AnimatePresence>
+        {showScrollButton && (
+          <motion.button
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.8 }}
+            onClick={() => bottomRef.current?.scrollIntoView({ behavior: "smooth" })}
+            className="absolute bottom-[90px] right-6 sm:right-10 z-[60] w-10 h-10 bg-[var(--bg-surface)] border border-[var(--border-soft)] rounded-full flex items-center justify-center text-[var(--text-secondary)] shadow-lg hover:text-[var(--text-primary)] hover:border-[var(--text-muted)] hover:bg-[var(--bg-input)] transition-colors active:scale-95"
+            title="Scroll to bottom"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       {/* Input Bar */}
-      <div className="flex-none border-t border-[var(--border-soft)] bg-[var(--bg-glass)] backdrop-blur-xl">
+      <div className="flex-none border-t border-[var(--border-soft)] bg-[var(--bg-glass)] backdrop-blur-xl relative z-20">
         {/* Reply Preview Deck */}
         <AnimatePresence>
           {replyTarget && (
