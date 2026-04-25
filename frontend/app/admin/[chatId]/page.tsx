@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-mo
 import { useRouter, useParams } from "next/navigation";
 import api from "@/lib/api";
 import { getSocket } from "@/lib/socket";
-import { getAccessToken, getUser } from "@/lib/auth";
+import { getAccessToken, getUser, performLogout } from "@/lib/auth";
 import { v4 as uuid } from "uuid";
 import AudioPlayer from "@/components/AudioPlayer";
 import ImageLightbox from "@/components/ImageLightbox";
@@ -65,6 +65,11 @@ export default function AdminChatPage() {
   const audioChunksRef   = useRef<Blob[]>([]);
   const typingTimeout    = useRef<ReturnType<typeof setTimeout>>(undefined);
   const user = getUser();
+
+  async function handleLogout() {
+    await performLogout();
+    router.replace("/");
+  }
 
   useEffect(() => {
     if (user?.role !== "admin") { router.replace("/chat"); return; }
@@ -636,6 +641,7 @@ export default function AdminChatPage() {
       <ChatInfoPanel 
         open={showInfo} 
         onClose={() => setShowInfo(false)} 
+        onLogout={handleLogout}
         user={otherUser}
         messageCount={messages.length}
       />
