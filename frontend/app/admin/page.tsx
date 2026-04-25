@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "@/lib/api";
-import { getUser, getAccessToken } from "@/lib/auth";
+import { getUser, getAccessToken, bootstrapSession } from "@/lib/auth";
 import { getSocket } from "@/lib/socket";
 
 interface Chat {
@@ -74,43 +74,42 @@ export default function AdminPage() {
   const resumeTimer = useRef<NodeJS.Timeout | null>(null);
   const typingTimers = useRef<Record<string, NodeJS.Timeout>>({});
 
-  const user = getUser();
+  const [currentUser, setCurrentUser] = useState(() => getUser());
+  const user = currentUser;
 
   useEffect(() => {
-    if (user?.role !== "admin") { router.replace("/chat"); return; }
-    
-    // Request Native Notification Permission
-    if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
-    }
-    
-    api.get("/chats")
-      .then(({ data }) => { 
-        setChats(data.chats || []); 
-        setLoading(false); 
-        
+    async function init() {
+      const ok = await bootstrapSession();
+      const resolvedUser = getUser();
+      if (!ok && !getAccessToken()) { router.replace("/"); return; }
+      if (resolvedUser?.role !== "admin") { router.replace("/chat"); return; }
+      setCurrentUser(resolvedUser);
+
+      // Request Native Notification Permission
+      if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+
+      try {
+        const { data } = await api.get("/chats");
+        setChats(data.chats || []);
+        setLoading(false);
+
         const socket = getSocket(getAccessToken()!);
         data.chats?.forEach((c: Chat) => socket.emit("join_chat", { chatId: c._id }));
-        
-        // New message → mark planet red + increment count + popup
+
         socket.on("new_message", (msg: any) => {
           const senderId = typeof msg.sender_id === "object" ? msg.sender_id._id : msg.sender_id;
-          if (senderId !== user.id) {
+          if (senderId !== resolvedUser!.id) {
             setChats((prev) => prev.map(chat => {
               if (chat._id === msg.chat_id) {
                 const senderName = typeof msg.sender_id === "object" ? msg.sender_id.name : "Commander";
-                
-                // Fire native notification if tab is in the background
                 if (document.visibilityState === "hidden" && "Notification" in window && Notification.permission === "granted") {
                   const notification = new Notification(`DOSMOS: ${senderName}`, {
                     body: msg.type === "text" ? msg.content : `[${msg.type.toUpperCase()}]`,
                   });
-                  notification.onclick = () => {
-                    window.focus();
-                    notification.close();
-                  };
+                  notification.onclick = () => { window.focus(); notification.close(); };
                 }
-
                 return { ...chat, hasUnread: true, unreadCount: (chat.unreadCount || 0) + 1, last_message: msg.content };
               }
               return chat;
@@ -118,7 +117,6 @@ export default function AdminPage() {
           }
         });
 
-        // All messages in a chat seen → restore planet color
         socket.on("seen_ack", ({ chatId }: { messageId: string; chatId?: string }) => {
           if (!chatId) return;
           setChats((prev) => prev.map(chat =>
@@ -126,24 +124,22 @@ export default function AdminPage() {
           ));
         });
 
-        // Typing indicator on planet cards
         socket.on("typing_indicator", ({ userId, displayText }: { userId: string; displayText: string }) => {
-          // Find which chat this user belongs to
-          const chat = data.chats?.find((c: Chat) => 
+          const chat = data.chats?.find((c: Chat) =>
             c.participants.some((p: any) => (typeof p === "object" ? p._id : p) === userId)
           );
           if (!chat) return;
-          
           setTypingMap((prev) => ({ ...prev, [chat._id]: displayText }));
-          
-          // Clear after 3s
           if (typingTimers.current[chat._id]) clearTimeout(typingTimers.current[chat._id]);
           typingTimers.current[chat._id] = setTimeout(() => {
             setTypingMap((prev) => ({ ...prev, [chat._id]: null }));
           }, 3000);
         });
-      })
-      .catch(() => setLoading(false));
+      } catch {
+        setLoading(false);
+      }
+    }
+    init();
 
     return () => {
       const token = getAccessToken();
@@ -153,7 +149,7 @@ export default function AdminPage() {
       socket.off("seen_ack");
       socket.off("typing_indicator");
     };
-  }, [router, user]);
+  }, [router]);
 
   const getOtherUser = (chat: Chat) => chat.participants.find((p) => p.role !== "admin");
 
