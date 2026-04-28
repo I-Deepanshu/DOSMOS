@@ -4,30 +4,26 @@ const PLANET_TYPES = [
   {
     type: "Rocky",
     min: 0.00, max: 0.25,
-    hueRange: [15, 45],
-    satRange: [40, 80],
+    satRange: [40, 75],
     lightRange: [30, 50]
   },
   {
     type: "Ocean",
     min: 0.25, max: 0.50,
-    hueRange: [180, 230],
-    satRange: [60, 90],
-    lightRange: [40, 60]
+    satRange: [70, 100],
+    lightRange: [35, 55]
   },
   {
     type: "Gas Giant",
     min: 0.50, max: 0.75,
-    hueRange: [250, 320], // purples/pinks
-    satRange: [60, 90],
-    lightRange: [40, 70]
+    satRange: [60, 95],
+    lightRange: [45, 70]
   },
   {
     type: "Ice",
     min: 0.75, max: 1.00,
-    hueRange: [170, 210],
-    satRange: [30, 60],
-    lightRange: [75, 90]
+    satRange: [20, 50],
+    lightRange: [75, 95]
   },
 ];
 
@@ -62,14 +58,11 @@ export function getPlanetColor(seed, planetType) {
   const satSeed = (colorSeed * 17) % 1;
   const lightSeed = (colorSeed * 23) % 1;
 
-  let h = planetType.hueRange[0] + hueSeed * (planetType.hueRange[1] - planetType.hueRange[0]);
+  // Use the FULL 360 degree color spectrum for all planets
+  const h = hueSeed * 360;
+  
   const s = planetType.satRange[0] + satSeed * (planetType.satRange[1] - planetType.satRange[0]);
   const l = planetType.lightRange[0] + lightSeed * (planetType.lightRange[1] - planetType.lightRange[0]);
-
-  // Give Gas Giants a chance to be vibrant orange/yellow
-  if (planetType.type === "Gas Giant" && colorSeed > 0.6) {
-    h = 20 + hueSeed * 40; 
-  }
 
   return hslToHex(h, s, l);
 }

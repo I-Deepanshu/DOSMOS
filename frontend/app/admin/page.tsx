@@ -28,6 +28,7 @@ interface PlanetData {
   isOuter: boolean;
   hasUnread: boolean;
   unreadCount: number;
+  type: string;
 }
 
 // Custom hook to detect cursor "intent" via velocity
@@ -197,6 +198,7 @@ export default function AdminPage() {
         hasUnread: isUnread || false,
         unreadCount: chat.unreadCount || 0,
         isOuter: i >= 6,
+        type: other?.planet?.type || "Rocky",
       };
     });
   }, [chats]);
@@ -408,11 +410,10 @@ function hexToRgb(hex: string): [number, number, number] {
   return [r, g, b];
 }
 
-function planet3dStyle(hex: string, size: number, hasUnread: boolean) {
-  const baseColor = hasUnread ? "#cc0000" : hex;
+function planet3dStyle(hex: string, size: number, hasUnread: boolean, type: string = "Rocky") {
   let r: number, g: number, b: number;
   try {
-    [r, g, b] = hexToRgb(baseColor);
+    [r, g, b] = hexToRgb(hex);
   } catch {
     [r, g, b] = [127, 90, 240]; // fallback
   }
@@ -427,17 +428,33 @@ function planet3dStyle(hex: string, size: number, hasUnread: boolean) {
 
   const dim = Math.round(size * 0.06); // inner shadow spread
 
+  let textureLayers: string[] = [];
+
+  if (type === "Gas Giant") {
+    textureLayers.push(`repeating-linear-gradient(12deg, transparent, transparent 10%, rgba(255,255,255,0.06) 10%, rgba(255,255,255,0.06) 18%, rgba(0,0,0,0.04) 18%, rgba(0,0,0,0.04) 28%)`);
+    textureLayers.push(`repeating-linear-gradient(-8deg, transparent, transparent 14%, rgba(0,0,0,0.05) 14%, rgba(0,0,0,0.05) 24%)`);
+  } else if (type === "Rocky") {
+    textureLayers.push(`radial-gradient(circle at 20% 65%, rgba(0,0,0,0.15) 0%, transparent 15%)`);
+    textureLayers.push(`radial-gradient(circle at 75% 30%, rgba(0,0,0,0.1) 0%, transparent 20%)`);
+    textureLayers.push(`radial-gradient(circle at 50% 80%, rgba(0,0,0,0.12) 0%, transparent 12%)`);
+    textureLayers.push(`radial-gradient(circle at 30% 25%, rgba(255,255,255,0.05) 0%, transparent 10%)`);
+  } else if (type === "Ocean") {
+    textureLayers.push(`radial-gradient(ellipse at 35% 45%, rgba(34,139,34,0.2) 0%, rgba(34,139,34,0.05) 25%, transparent 40%)`);
+    textureLayers.push(`radial-gradient(ellipse at 70% 60%, rgba(139,69,19,0.15) 0%, rgba(34,139,34,0.1) 20%, transparent 30%)`);
+  } else if (type === "Ice") {
+    textureLayers.push(`repeating-linear-gradient(45deg, rgba(255,255,255,0.08), transparent 4%, rgba(255,255,255,0.15) 5%, transparent 7%)`);
+    textureLayers.push(`radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%)`);
+  }
+
   return {
     background: [
-      // Layer 1: specular highlight — sharp white glint top-left
       `radial-gradient(circle at 34% 28%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.55) 8%, transparent 30%)`,
-      // Layer 2: secondary soft sheen
       `radial-gradient(circle at 42% 38%, rgba(255,255,255,0.18) 0%, transparent 45%)`,
-      // Layer 3: sphere diffuse — lit top-left → base → dark bottom-right
-      `radial-gradient(circle at 38% 35%, rgb(${lr},${lg},${lb}) 0%, ${baseColor} 48%, rgb(${dr},${dg},${db}) 100%)`,
+      ...textureLayers,
+      `radial-gradient(circle at 38% 35%, rgb(${lr},${lg},${lb}) 0%, ${hex} 48%, rgb(${dr},${dg},${db}) 100%)`,
     ].join(", "),
     boxShadow: hasUnread
-      ? `0 0 ${size}px rgba(204,0,0,0.9), 0 0 ${size * 2}px rgba(204,0,0,0.4), inset -${dim}px -${dim}px ${dim * 3}px rgba(0,0,0,0.7)`
+      ? `0 0 ${size}px rgba(255,77,109,0.9), 0 0 ${size * 2}px rgba(255,77,109,0.5), inset -${dim}px -${dim}px ${dim * 3}px rgba(0,0,0,0.8)`
       : `0 0 ${size * 0.8}px rgba(${r},${g},${b},0.7), 0 0 ${size * 1.8}px rgba(${r},${g},${b},0.25), inset -${dim}px -${dim}px ${dim * 3}px rgba(0,0,0,0.6)`,
   };
 }
@@ -489,7 +506,7 @@ function PlanetCard({ planet, isPaused, isSlowed, isActive, isTyping, onEnter, o
              transform: `translateY(-${planet.radius}px)`,
              // @ts-ignore
              "--radius": `${planet.radius}px`,
-             ...planet3dStyle(planet.originalColor, planet.size, planet.hasUnread),
+             ...planet3dStyle(planet.originalColor, planet.size, planet.hasUnread, planet.type),
            }}
            onMouseEnter={handleEnter}
            onMouseLeave={handleLeave}
