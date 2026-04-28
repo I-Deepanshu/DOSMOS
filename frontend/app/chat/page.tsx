@@ -904,33 +904,25 @@ function MessageTick({ status }: { status?: Message["status"] }) {
   }
   if (status === "sent") {
     return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-secondary)]">
-        <polyline points="20 6 9 17 4 12"></polyline>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-secondary)]">
+        <path d="M20 6 9 17l-5-5"/>
       </svg>
     );
   }
   if (status === "delivered") {
     return (
-      <div className="relative inline-flex items-center text-[var(--text-secondary)]">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="absolute -left-1">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="ml-1 z-10 bg-[var(--user-accent)] shadow-[-2px_0_0_var(--user-accent)]">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-secondary)]">
+        <path d="M18 6 7 17l-5-5"/>
+        <path d="m22 10-7.5 7.5L13 16"/>
+      </svg>
     );
   }
   if (status === "seen") {
     return (
-      <div className="relative inline-flex items-center text-blue-400">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="absolute -left-1">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="ml-1 z-10 bg-[var(--user-accent)] shadow-[-2px_0_0_var(--user-accent)]">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 6 7 17l-5-5"/>
+        <path d="m22 10-7.5 7.5L13 16"/>
+      </svg>
     );
   }
   return null;
