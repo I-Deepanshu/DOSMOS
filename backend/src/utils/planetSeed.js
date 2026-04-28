@@ -4,24 +4,43 @@ const PLANET_TYPES = [
   {
     type: "Rocky",
     min: 0.00, max: 0.25,
-    colors: ["#B5651D", "#8B4513", "#CD853F", "#A0522D"],
+    hueRange: [15, 45],
+    satRange: [40, 80],
+    lightRange: [30, 50]
   },
   {
     type: "Ocean",
     min: 0.25, max: 0.50,
-    colors: ["#0077B6", "#00B4D8", "#4FC3F7", "#48CAE4"],
+    hueRange: [180, 230],
+    satRange: [60, 90],
+    lightRange: [40, 60]
   },
   {
     type: "Gas Giant",
     min: 0.50, max: 0.75,
-    colors: ["#7B2FBE", "#E8871E", "#F4A261", "#9B5DE5"],
+    hueRange: [250, 320], // purples/pinks
+    satRange: [60, 90],
+    lightRange: [40, 70]
   },
   {
     type: "Ice",
     min: 0.75, max: 1.00,
-    colors: ["#CAF0F8", "#ADE8F4", "#90E0EF", "#E0FBFC"],
+    hueRange: [170, 210],
+    satRange: [30, 60],
+    lightRange: [75, 90]
   },
 ];
+
+function hslToHex(h, s, l) {
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+}
 
 /**
  * Deterministic float 0..1 from dob + name.
@@ -39,6 +58,18 @@ export function getPlanetType(seed) {
 
 export function getPlanetColor(seed, planetType) {
   const colorSeed = (seed * 1000) % 1;
-  const idx = Math.floor(colorSeed * planetType.colors.length);
-  return planetType.colors[idx];
+  const hueSeed = (colorSeed * 13) % 1;
+  const satSeed = (colorSeed * 17) % 1;
+  const lightSeed = (colorSeed * 23) % 1;
+
+  let h = planetType.hueRange[0] + hueSeed * (planetType.hueRange[1] - planetType.hueRange[0]);
+  const s = planetType.satRange[0] + satSeed * (planetType.satRange[1] - planetType.satRange[0]);
+  const l = planetType.lightRange[0] + lightSeed * (planetType.lightRange[1] - planetType.lightRange[0]);
+
+  // Give Gas Giants a chance to be vibrant orange/yellow
+  if (planetType.type === "Gas Giant" && colorSeed > 0.6) {
+    h = 20 + hueSeed * 40; 
+  }
+
+  return hslToHex(h, s, l);
 }
