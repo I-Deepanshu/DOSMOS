@@ -102,6 +102,7 @@ export default function AdminPage() {
         socket.on("new_message", (msg: any) => {
           const senderId = typeof msg.sender_id === "object" ? msg.sender_id._id : msg.sender_id;
           if (senderId !== resolvedUser!.id) {
+            socket.emit("message_delivered", { chatId: msg.chat_id, messageId: msg._id });
             setChats((prev) => prev.map(chat => {
               if (chat._id === msg.chat_id) {
                 const senderName = typeof msg.sender_id === "object" ? msg.sender_id.name : "Commander";

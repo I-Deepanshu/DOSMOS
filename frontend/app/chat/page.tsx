@@ -114,6 +114,13 @@ export default function ChatPage() {
         const socket = getSocket(getAccessToken()!);
         socket.emit("join_chat", { chatId: chat._id });
 
+        msgs.forEach((m: Message) => {
+          const sId = typeof m.sender_id === "object" ? m.sender_id._id : m.sender_id;
+          if (sId !== user?.id && m.status === "sent") {
+            socket.emit("message_delivered", { chatId: chat._id, messageId: m._id });
+          }
+        });
+
         socket.on("new_message", (msg: Message) => {
           const senderId = typeof msg.sender_id === "object" ? msg.sender_id._id : msg.sender_id;
           if (senderId !== user?.id) {
